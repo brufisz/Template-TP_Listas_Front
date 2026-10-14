@@ -134,9 +134,9 @@ body {
 .barra-filtros {
   width: fit-content;
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  flex-direction: column;
   align-items: center;
+  gap: 12px;
   margin-bottom: 20px;
   padding: 10px;
   background-color: #dce7f5;
@@ -144,8 +144,15 @@ body {
   border-radius: 8px;
 }
 
-.barra-filtros select {
+.fila-filtros {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.fila-filtros select {
   width: 220px;
+  height: 42px;
   padding: 10px;
   background-color: #f8fbff;
   color: #304c70;
@@ -155,23 +162,19 @@ body {
   cursor: pointer;
 }
 
-.barra-filtros input {
+.fila-filtros input {
   width: 500px;
+  height: 42px;
   padding: 10px;
-  background-color: #ffffff;
+  background-color: white;
   color: #304c70;
   border: 1px solid #b8cce5;
   border-radius: 6px;
   font-size: 15px;
 }
 
-.barra-filtros select,
-.barra-filtros input {
-  height: 42px;
-  font-family: inherit;
-}
-
-.barra-filtros button {
+.fila-filtros button {
+  width: 170px;
   height: 42px;
   padding: 0 15px;
   background-color: #2f6fd6;
@@ -180,23 +183,82 @@ body {
   border-radius: 6px;
   font-size: 15px;
   cursor: pointer;
-  width: 140px;
 }
 
-.barra-filtros button:hover {
+.fila-filtros button:hover {
   background-color: #2458aa;
+}
+
+.fila-filtros button.cerrar {
+  background-color: #d9534f;
+}
+
+.fila-filtros button.cerrar:hover {
+  background-color: #b94440;
 }
 
 .addFood {
   display: none;
-  margin-top: 0;
-  margin-bottom: 0px;
+  width: 360px;
+  margin: 0;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 10px;
 }
 
-.barra-filtros button.cerrar {
-  background-color: #d9534f;
+.recetario {
+  width: fit-content;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #dce7f5;
+  border: 1px solid #b8cce5;
+  border-radius: 8px;
 }
 
-.barra-filtros button.cerrar:hover {
-  background-color: #b94440;
+.recetario h2 {
+  margin-bottom: 10px;
 }
+
+.recetario p {
+  margin-bottom: 12px;
+}
+
+.recetario form {
+  display: flex;
+  gap: 10px;
+}
+
+.recetario input {
+  width: 500px;
+  padding: 10px;
+  border: 1px solid #b8cce5;
+  border-radius: 6px;
+}
+
+.recetario button {
+  padding: 10px 15px;
+  background-color: #2f6fd6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.recetario button:hover {
+  background-color: #2458aa;
+}
+
+#resultadosRecetario h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.resultado-receta {
+  background-color: white;
+  padding: 12px;
+  margin-top: 8px;
+  border: 1px solid #b8cce5;
+  border-radius: 6px;
+}
+

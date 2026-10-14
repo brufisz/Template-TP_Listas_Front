@@ -8,14 +8,16 @@
 </head>
 <body>
     <header class="barra-filtros">
-      <input type="text" id="busqueda" placeholder="Buscar comida...">
-      <select id="filtroCategoria">
-        <option value="">Todas las categorías</option>
-      </select>
-      <select id="filtroProvincia">
-        <option value="">Todas las provincias</option>
-      </select>
+      <div class="fila-filtros">
+        <input type="text" id="busqueda" placeholder="Buscar comida...">
+        <select id="filtroCategoria">
+          <option value="">Todas las categorías</option>
+        </select>
+        <select id="filtroProvincia">
+          <option value="">Todas las provincias</option>
+        </select>
       <button type="button" id="botonAgregar">Agregar comida</button>
+      </div>
       <section class="addFood" id="seccionAgregar">
         <h2>Agregar comida</h2>
         <form id="comidaForm">
@@ -32,7 +34,17 @@
         </form>
       </section>
     </header>
+    <section class="recetario">
+      <h2>¿Qué puedo cocinar?</h2>
+      <p>Ingresá los ingredientes disponibles separados por comas.</p>
+      <form id="formRecetario">
+        <input type="text" id="misIngredientes"
+               placeholder="Ingresá ingredientes..." required>
+        <button type="submit">Buscar platos</button>
+      </form>
     
+      <div id="resultadosRecetario"></div>
+    </section>
 
     <main class="comida-container" id="comidaContainer">
         <!-- Contenido Dinamico -->

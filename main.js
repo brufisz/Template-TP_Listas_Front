@@ -156,3 +156,72 @@ filtroCategoria.addEventListener("change", filtrarComidas);
 filtroCategoria.addEventListener("change", actualizarFiltros);
 filtroProvincia.addEventListener("change", filtrarComidas);
 filtroProvincia.addEventListener("change", actualizarFiltros);
+
+//RECETARIO
+
+const formRecetario = document.getElementById("formRecetario");
+const misIngredientes = document.getElementById("misIngredientes");
+const resultadosRecetario = document.getElementById("resultadosRecetario");
+
+formRecetario.addEventListener("submit", (event) => {
+  event.preventDefault();
+  let ingredientesUsuario = misIngredientes.value.toLowerCase().split(",");
+  let posibles = [];
+  let cercanos = [];
+  comidas.forEach(comida => {
+    let faltantes = [];
+    let encontrados = 0;
+    comida.ingredientes.forEach(ingrediente => {
+      let tengo = false;
+      ingredientesUsuario.forEach(ingredienteUsuario => {
+        let buscado = ingredienteUsuario.trim();
+        let necesario = ingrediente.toLowerCase().trim();
+        if (buscado !== "" && (necesario.includes(buscado) || buscado.includes(necesario))) {
+          tengo = true;
+        }
+      });
+      if (tengo) {
+        encontrados++;
+      } else {
+        faltantes.push(ingrediente);
+      }
+    });
+    if (encontrados > 0) {
+      if (faltantes.length === 0) {
+        posibles.push(comida);
+      } else if (faltantes.length <= 2) {
+        cercanos.push({
+          nombre: comida.nombre,
+          faltantes: faltantes
+        });
+      }
+    }
+  });
+  resultadosRecetario.innerHTML = "";
+  if (posibles.length > 0) {
+    resultadosRecetario.innerHTML += "<h3>Platos que podés preparar</h3>";
+    posibles.forEach(comida => {
+      resultadosRecetario.innerHTML += `
+        <div class="resultado-receta">
+          <strong>${comida.nombre}</strong>
+          <p>Tenés todos los ingredientes.</p>
+        </div>
+      `;
+    });
+  }
+
+  if (cercanos.length > 0) {
+    resultadosRecetario.innerHTML += "<h3>Te faltan pocos ingredientes para preparar este plato</h3>";
+    cercanos.forEach(comida => {
+      resultadosRecetario.innerHTML += `
+        <div class="resultado-receta">
+          <strong>${comida.nombre}</strong>
+          <p>Te faltan: ${comida.faltantes.join(", ")}</p>
+        </div>
+      `;
+    });
+  }
+  if (posibles.length === 0 && cercanos.length === 0) {
+    resultadosRecetario.innerHTML = "<p>No se encontraron platos con esos ingredientes.</p>";
+  }
+});
