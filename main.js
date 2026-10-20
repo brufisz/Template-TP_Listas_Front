@@ -58,39 +58,50 @@ botonAgregar.addEventListener("click", () => {
   }
 });
 
-agregarComida.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const ingredientes = event.target.ingredientes.value.split(",");
-    const nuevaComida = {
-      nombre: event.target.nombre.value,
-      categoria: event.target.categoria.value,
-      provincia: event.target.provincia.value,
-      ingredientes: ingredientes
-    };
-    comidas.push(nuevaComida);
-    mostrarComidas(comidas);
-    agregarComida.reset();
-    actualizarFiltros();
-    filtrarComidas();
-})
-
 function actualizarBotones() {
   const botones = document.querySelectorAll(".borrar");
+
   botones.forEach(boton => {
-    boton.addEventListener("click", () => {
+    boton.onclick = () => {
       const nombreABorrar = boton.value;
       let nuevasComidas = [];
+
       comidas.forEach(comida => {
         if (comida.nombre != nombreABorrar) {
           nuevasComidas.push(comida);
         }
       });
+
       comidas = nuevasComidas;
-      mostrarComidas(comidas);
       filtrarComidas();
-    });
+    };
   });
-};
+
+  const botonesIngredientes = document.querySelectorAll(".quitarIngrediente");
+
+  botonesIngredientes.forEach(boton => {
+    boton.onclick = () => {
+      const posicion = Number(boton.value);
+      let nuevosIngredientes = [];
+      for (let i = 0; i < ingredientes.length; i++) {
+        if (i !== posicion) {
+          nuevosIngredientes.push(ingredientes[i]);
+        }
+      }
+      ingredientes = nuevosIngredientes;
+      listaIngredientes.innerHTML = "";
+      for (let i = 0; i < ingredientes.length; i++) {
+        listaIngredientes.innerHTML += `
+          <li>
+            ${ingredientes[i]}
+            <button type="button" class="quitarIngrediente" value="${i}">×</button>
+          </li>
+        `;
+      }
+      actualizarBotones();
+    };
+  });
+}
 
 //FILTROS
 
@@ -176,7 +187,7 @@ formRecetario.addEventListener("submit", (event) => {
       ingredientesUsuario.forEach(ingredienteUsuario => {
         let buscado = ingredienteUsuario.trim();
         let necesario = ingrediente.toLowerCase().trim();
-        if (buscado !== "" && (necesario.includes(buscado) || buscado.includes(necesario))) {
+        if (buscado !== "" && necesario === buscado) {
           tengo = true;
         }
       });
@@ -224,4 +235,49 @@ formRecetario.addEventListener("submit", (event) => {
   if (posibles.length === 0 && cercanos.length === 0) {
     resultadosRecetario.innerHTML = "<p>No se encontraron platos con esos ingredientes.</p>";
   }
+});
+
+
+const ingredienteNuevo = document.getElementById("ingredienteNuevo");
+const botonIngrediente = document.getElementById("botonIngrediente");
+const listaIngredientes = document.getElementById("listaIngredientes");
+
+let ingredientes = [];
+
+botonIngrediente.addEventListener("click", () => {
+  const ingrediente = ingredienteNuevo.value.trim();
+  if (ingrediente !== "") {
+    ingredientes.push(ingrediente);
+    listaIngredientes.innerHTML += `
+      <li>
+        ${ingrediente}
+        <button type="button" class="quitarIngrediente" value="${ingredientes.length - 1}">×</button>
+      </li>
+    `;
+    ingredienteNuevo.value = "";
+    actualizarBotones();
+  }
+});
+
+agregarComida.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (ingredientes.length === 0) {
+    alert("Agregá al menos un ingrediente.");
+    return;
+  }
+  const nuevaComida = {
+    nombre: event.target.nombre.value,
+    categoria: event.target.categoria.value,
+    provincia: event.target.provincia.value,
+    ingredientes: ingredientes
+  };
+  comidas.push(nuevaComida);
+  actualizarFiltros();
+  filtrarComidas();
+  ingredientes = [];
+  listaIngredientes.innerHTML = "";
+  agregarComida.reset();
+  seccionAgregar.style.display = "none";
+  botonAgregar.textContent = "Agregar comida";
+  botonAgregar.classList.remove("cerrar");
 });
